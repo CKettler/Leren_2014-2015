@@ -1,10 +1,14 @@
-function [ g ] = gradientVector( theta_0, theta_1, x, y )
-% Calculate gradient (vector)
+function [ g ] = gradientVector( theta_0, theta_1, X, Y )
+% Calculate gradient (vector multiplication based)
 
-    m = length(x);
+    m = length(X);
+    
+    % Sum of partial derivatives to get gradient
+    g(1) = sum(theta_0 + theta_1 * X - Y);
+    g(2) = sum(X .* (theta_0 + theta_1 * X - Y));
 
-    g(0) =   sum(theta_0 + theta_1 * x - y);
-    g(1) = sum(x .* (theta_0 + theta_1 * x - y));
-
+    % Divide by length to get average
+    g = g / m;
+    
 end
 
