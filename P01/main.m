@@ -197,14 +197,14 @@ end % end for i
 fprintf('\nFor given dataset, best alpha: %d, best iter: %d\n', ...
         best_alpha, best_iter);
 
-% ANSWERS:
+% CLARIFICATION:
 % Test bedrooms vs price:
 % "For given dataset, best alpha: 1.700000e-01, best iter: 10000"
 % Test bathrooms vs price:
 % "For given dataset, best alpha: 2.300000e-01, best iter: 1000"
 % Test size vs price:
 % "For given dataset, best alpha: 5.060000e-07, best iter: 10000"
-
+%
 % As can be seen, a high iteration will give better results. Of course,
 % if the optimal parameters have been found, increasing iteration will only
 % increase the required time (Bathroom vs. price).
