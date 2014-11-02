@@ -69,8 +69,6 @@ max_iter = 100;
 prediction = theta_0 + theta_1 * house_bedrooms;
 subplot(3, 3, 4);
 hold all;
-theta_0
-theta_1
 plot(house_bedrooms, house_price, '.');
 plot(house_bedrooms, prediction, '-', 'linewidth', 2);
 xlabel('bedrooms');
@@ -90,8 +88,6 @@ max_iter = 100;
 prediction = theta_0 + theta_1 * house_bathrooms;
 subplot(3, 3, 5);
 hold all;
-theta_0
-theta_1
 plot(house_bathrooms, house_price, '.');
 plot(house_bathrooms, prediction, '-', 'linewidth', 2);
 xlabel('bathrooms');
@@ -111,8 +107,6 @@ max_iter = 100;
 prediction = theta_0 + theta_1 * house_size;
 subplot(3, 3, 6);
 hold all;
-theta_0
-theta_1
 plot(house_size, house_price, '.');
 plot(house_size, prediction, '-', 'linewidth', 2);
 xlabel('size');
