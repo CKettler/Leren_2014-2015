@@ -1,5 +1,6 @@
 function [ costs ] = costLogistic( Thetas, Xs, Ys )
-
+    % Calculates the cost of logistic regression given Thetas, features and
+    % Y. 
     Hs = hypLogistic(Thetas, Xs);
 
     m = length(Ys);

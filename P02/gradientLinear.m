@@ -1,5 +1,5 @@
 function [ g ] = gradientLinear( Thetas, Xs, Ys )
-% Calculates gradient for multivariate linear regression
+    % Calculates gradient for multivariate linear regression
 
     m = length(Xs);
     n = size(Xs);

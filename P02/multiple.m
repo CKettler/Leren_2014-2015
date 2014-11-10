@@ -1,7 +1,6 @@
 function [ Params, Xs, Ys ] = multiple(Thetas, alpha, iterations)
-    %% Q1.1: LOAD DATA (ESSENTIAL FOR RUNNING OTHER SECTIONS)
-    % Houses data
-
+    
+    % read data
     data = csvread('housesRegr.csv', 1, 0);
     Xs = data(:,2:(end-1));
     Xs = [ones(length(Xs),1 ), Xs];
