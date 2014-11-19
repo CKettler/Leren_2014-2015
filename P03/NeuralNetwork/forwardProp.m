@@ -1,4 +1,4 @@
-function [ a2, a3 ] = forwardProp(Xs, Thetas1, Thetas2)
+function [a2, a3] = forwardProp(Xs, Thetas1, Thetas2)
 % Applies forward propagation
 
     % Initalise activation values for hidden layer

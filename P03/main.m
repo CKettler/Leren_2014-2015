@@ -81,14 +81,27 @@ Thetas2 = rand(hidden2, output3) * (2 * epsilon) - epsilon;
 
 % Variables
 alpha = 0.1;
-iter = 100;
-lambda = 1;
+iter = 10000;
+lambda = 0;
 cost = zeros(1, iter);
 
 for i = 1: iter
     [a2, a3] = forwardProp(Xs, Thetas1, Thetas2);
-    deltas = deltaNN(Thetas1, Thetas2, Ys, a2, a3);
+    [Deltas2, Deltas3] = deltaNN(Thetas2, Ys, a2, a3);
+    
+    Thetas1 = Thetas1 - alpha * Deltas2;
+    Thetas2 = Thetas2 - alpha * Deltas3;
+    
+%     cost(i) = costNN(Xs, Thetas1, Thetas2, Ys, lambda);
 end
 
+Thetas1
+Thetas2
+
+[a2, a3] = forwardProp(Xs, Thetas1, Thetas2);
+
+% plot(1:iter, cost);
 
 
+
+    

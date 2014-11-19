@@ -1,4 +1,4 @@
-function [ cost ] = costNN(Xs, Thetas1, Thetas2, Ys, lambda)
+function [cost] = costNN(Xs, Thetas1, Thetas2, Ys, lambda)
 % Cost function for neural network
 
     m = length(Ys);
@@ -7,7 +7,7 @@ function [ cost ] = costNN(Xs, Thetas1, Thetas2, Ys, lambda)
     
     hyps = forwardProp(Xs, Thetas1, Thetas2);
     
-    cost = (1/m) * sum(Ys .* log(hyps) + (1 - Ys).* log(1 - hyps)) + lambda;
+    cost = (1/m) * sum(Ys .* log(hyps) + (1 - Ys) .* log(1 - hyps));% + lambda;
     
 end
 
