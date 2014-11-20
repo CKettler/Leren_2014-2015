@@ -12,6 +12,9 @@ function [ Thetas, Ynew ] = compareClasses(Thetas, alpha, Xs, Ys, iter, y, lambd
        cost(i) = costLogRegularized(Thetas, Xs, Ynew, lambda);
     end
     
+    figure('name','Q1a: Plotting regularized logistic regression');
     plot(1:iter, cost);
+    ylabel('Cost');
+    xlabel('Iterations');
     
 end
