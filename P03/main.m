@@ -96,6 +96,7 @@ Thetas2 = (rand(hidden2, output3) * (2 * epsilon) - epsilon)';
 alpha = 0.05;
 iter = 10000;
 lambda = 0; % Algorithm doesnt work with lambda yet.
+cost = zeros(1,iter);
 
 for i = 1: iter
     % Get activation values and calculate gradients
@@ -112,10 +113,13 @@ for i = 1: iter
     
     % Update Thetas1
     Thetas1 = Thetas1 - alpha * Deltas2;
+    
+    cost(i) = costNN(Xs, Thetas1, Thetas2, Ys, lambda);
 end
 
 % Get predictions with trained parameters and print
 [a2, a3] = forwardProp(Xs, Thetas1, Thetas2);
 output_vs_y = [a3', Ys]
 
+plot(cost);
 clear    
