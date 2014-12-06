@@ -1,8 +1,9 @@
 %%% Leren Practicum # 5
 %%% Thomas Meijers (10647023)
-%%% December 2014
+%%% 6 December 2014
 
 %% Q1.a - Naive Bayes Classifier
+% REMARK: Q1.b is included in this section, see below
 
 % Load data
 load('digit_dataset.mat');
@@ -14,6 +15,7 @@ load('digit_dataset.mat');
 [classes, pY, Xs_tr_mu, Xs_tr_sigma] = trainClassifiers(digits1231);
 
 
+% Predict, get accuracy and time
 tic;
 acc_iter = naiveBayesIter(Xs_tst, Ys_tst, Xs_tr_sigma, Xs_tr_mu, pY, classes);
 time_iter = toc;
@@ -22,8 +24,8 @@ tic;
 time_vector = toc;
 
 fprintf('\nQ1.a - Naive Bayes Classifier\n');
-fprintf('Iteration based naive Bayes: \tAcc = %f\t Time = %f\n', acc_iter, time_iter);
-fprintf('Vector based naive Bayes: \t\tAcc = %f\t Time = %f\n\n', acc_vector, time_vector);
+fprintf('Iteration based naive Bayes: \tAcc = %f\t\tTime = %f\n', acc_iter, time_iter);
+fprintf('Vector based naive Bayes: \t\tAcc = %f\t\tTime = %f\n\n', acc_vector, time_vector);
 
 % Q1.b - Analyzing wrong predictions
 % REMARK FOR GRADING: To check evaluations remove semicolons to unsurpress 
@@ -31,8 +33,7 @@ fprintf('Vector based naive Bayes: \t\tAcc = %f\t Time = %f\n\n', acc_vector, ti
 
 fprintf('Q1.b - Analyzing wrong predictions\n');
 fprintf('Ones predicted correctly: \t\t%i/80\n', predicted(1));
-fprintf('Twos predicted correctly: \t\t%i/80\n', predicted(2));
-fprintf('Threes predicted correctly: \t%i/80\n', predicted(3));
+fprintf('Let''s analyze these two wrong predicted examples, see code and comments.\n')
 
 % The two wrong predictions for 1 are the 60th and 63rd training test
 % example (uncomment rule 40 in naiveBayesVector.m to show these indices).
@@ -102,7 +103,90 @@ false_predictions = 80 - predicted(1);
 % feature 60. I find this enough work for this question, probably also for
 % grading it.
 
-%% Q2.a
+clear; 
 
-%% Q2.b
+%% Q2.a - Statistic test comparing Naive Bayes with K Nearest Neighbours
 
+% NAIVE BAYS ACCURACY (code from Q1.a)
+% Load data
+load('digit_dataset.mat');
+% Read test data
+[Xs_tst, Ys_tst] = read_dataset(digits1232);
+% Train classifiers
+[classes, pY, Xs_tr_mu, Xs_tr_sigma] = trainClassifiers(digits1231);
+% Predict, get accuracy
+[acc_nbayes, ~] = naiveBayesVector(Xs_tst, Ys_tst, Xs_tr_sigma, Xs_tr_mu, pY, classes);
+
+% K NEAREST NEIGHBOUR ACCURACY (code from P04)
+% Read data
+[Xs_train, Cs_train] = read_dataset(digits1231);
+[Xs_test, Cs_test] = read_dataset(digits1232);
+% sqrt(n) seems to be a good measure for k
+k = ceil(sqrt(length(Xs_test)));
+results = zeros(length(Xs_test), 1);
+for i = 1:length(Xs_test)
+    % no weights
+    pred = kNN(Xs_train, Cs_train, Xs_test(i,:), k, 'standard', false);
+    C_gold = Cs_test(i);
+    results(i) = (pred == C_gold);
+end
+acc_knn = (length(results(results==1)) / length(results)) * 100;
+
+% Mean is zero if no difference
+mu = 0;
+% Actual difference is
+diff = acc_knn - acc_nbayes;
+% Get std dev
+p = (acc_nbayes + acc_knn) / 200;
+sigma = sqrt((2 * p * (1 - p)) / 100);
+% Now calculate z score and score needed to reject the hypothesis that
+% there is no difference between the algorithms (accuracy wise)
+z = diff / sigma;
+z_reject = sqrt(2) * erfcinv(0.025*2);
+
+fprintf('\nQ2.a - Accuracy Naive Bayes vs. K Nearest Neighbours\n');
+fprintf('Z-score = %f\t\tZ-threshold to reject = %f\n', z, z_reject);
+
+% This show's us the deviation for this difference in accuracy is 212 times
+% the standard devation, we reject the hypothesis that the accuracy of both
+% methods is equal with a z-score above 1.96 or below -1.96, thus we can
+% assume that the accuracy of these methods is (very) different.
+
+clear;
+
+%% Q2.b - Swapping test and training sets
+
+% I predict different results for multiple reasons, the first is we have
+% noise in either one of the sets, else our accuracy would have been 100%
+% at the previous question. This means that we can't have a perfect
+% classifier and there is a descripancy between these sets. Secondly, using
+% this information, one set (digits123-1) consists of more examples, namely
+% 300 versus the 240 in the other set (digits123-2) which matters since we
+% have noise in our data.
+
+% Load data
+load('digit_dataset.mat');
+
+% NON SWAPPED (same as Q1)
+% Read test data
+[Xs_tst, Ys_tst] = read_dataset(digits1232);
+% Train classifiers
+[classes, pY, Xs_tr_mu, Xs_tr_sigma] = trainClassifiers(digits1231);
+% Predict and get accuracy
+[acc_notswapped, ~] = naiveBayesVector(Xs_tst, Ys_tst, Xs_tr_sigma, Xs_tr_mu, pY, classes);
+
+% SWAPPED
+% Read test data (now digits123-1 as test set)
+[Xs_tst, Ys_tst] = read_dataset(digits1231);
+% Train classifiers (now train on digits123-2)
+[classes, pY, Xs_tr_mu, Xs_tr_sigma] = trainClassifiers(digits1232);
+% Predict and get accuracy
+[acc_swapped, ~] = naiveBayesVector(Xs_tst, Ys_tst, Xs_tr_sigma, Xs_tr_mu, pY, classes);
+
+fprintf('\nQ2.b - Swapping data sets\n');
+fprintf('Difference in accuracy: \tNot swapped = %f\t\tSwapped = %f\n\n', acc_notswapped, acc_swapped);
+
+% And indeed, the result is (very) different. This is due to the reason
+% named above, namely the difference in size.
+
+clear; 
