@@ -22,7 +22,7 @@ time_iter = toc;
 tic;
 [acc_vector, predicted] = naiveBayesVector(Xs_tst, Ys_tst, Xs_tr_sigma, Xs_tr_mu, pY, classes);
 time_vector = toc;
-
+    
 fprintf('\nQ1.a - Naive Bayes Classifier\n');
 fprintf('Iteration based naive Bayes: \tAcc = %f\t\tTime = %f\n', acc_iter, time_iter);
 fprintf('Vector based naive Bayes: \t\tAcc = %f\t\tTime = %f\n\n', acc_vector, time_vector);
